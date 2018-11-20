@@ -1,36 +1,41 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 """This script is to generate projection for a given target language from 3 other source languages."""
 
 import sys, os
 from collections import Counter
 from itertools import *
 
+#backoff corpora
 corporaType = "wikiner"
 en_freq_tag = "en.wikiner"
 es_freq_tag = "es.wikiner"
 it_freq_tag = "it.wikiner"
 de_freq_tag = "de.wikiner"
-en_freq_corpora = 'aij-wikiner-en-nerc.conll02'
-it_freq_corpora = 'aij-wikiner-it-nerc.conll02'
-es_freq_corpora = 'aij-wikiner-es-nerc.conll02'
-de_freq_corpora = 'aij-wikiner-de-nerc.conll02'
+en_freq_corpora = '/tartalo03/users/crosstext/ner-silver-standard/wikipedia/wikiner/aij-wikiner-en-nerc.conll02'
+it_freq_corpora = '/tartalo03/users/crosstext/ner-silver-standard/wikipedia/wikiner/aij-wikiner-it-nerc.conll02'
+es_freq_corpora = '/tartalo03/users/crosstext/ner-silver-standard/wikipedia/wikiner/aij-wikiner-es-nerc.conll02'
+de_freq_corpora = '/tartalo03/users/crosstext/ner-silver-standard/wikipedia/wikiner/aij-wikiner-de-nerc.conll02'
 
-de_en_alignment = 'en-de.grow-diag-final.alignment'
-es_en_alignment = 'en-es.grow-diag-final.alignment'
-it_en_alignment = 'en-it.grow-diag-final.alignment'
-de_it_alignment = 'de-it.grow-diag-final.alignment'
-es_it_alignment = 'es-it.grow-diag-final.alignment'
-en_it_alignment = 'en-it.grow-diag-final.alignment'
-en_es_alignment = 'en-es.grow-diag-final.alignment'
-de_es_alignment = 'de-es.grow-diag-final.alignment'
-it_es_alignment = 'es-it.grow-diag-final.alignment'
-en_de_alignment = 'en-de.grow-diag-final.alignment'
-es_de_alignment = 'de-es.grow-diag-final.alignment'
-it_de_alignment = 'de-it.grow-diag-final.alignment'
+#automatic alignments from Europarl train set
+de_en_alignment = '/tartalo03/users/crosstext/europarl/train/train.grow-diag-final.alignment.en-de'
+es_en_alignment = '/tartalo03/users/crosstext/europarl/train/train.grow-diag-final.alignment.en-es'
+it_en_alignment = '/tartalo03/users/crosstext/europarl/train/train.grow-diag-final.alignment.en-it'
+de_it_alignment = '/tartalo03/users/crosstext/europarl/train/train.grow-diag-final.alignment.de-it'
+es_it_alignment = '/tartalo03/users/crosstext/europarl/train/train.grow-diag-final.alignment.es-it'
+en_it_alignment = '/tartalo03/users/crosstext/europarl/train/train.grow-diag-final.alignment.en-it'
+en_es_alignment = '/tartalo03/users/crosstext/europarl/train/train.grow-diag-final.alignment.en-es'
+de_es_alignment = '/tartalo03/users/crosstext/europarl/train/train.grow-diag-final.alignment.de-es'
+it_es_alignment = '/tartalo03/users/crosstext/europarl/train/train.grow-diag-final.alignment.es-it'
+en_de_alignment = '/tartalo03/users/crosstext/europarl/train/train.grow-diag-final.alignment.en-de'
+es_de_alignment = '/tartalo03/users/crosstext/europarl/train/train.grow-diag-final.alignment.de-es'
+it_de_alignment = '/tartalo03/users/crosstext/europarl/train/train.grow-diag-final.alignment.de-it'
 
-en_standard_tag = 'en-europarl.test'
-es_standard_tag = "es-europarl.test"
-it_standard_tag = "it-europarl.test"
-de_standard_tag = "de-europarl.test"
+en_standard_tag = '/tartalo03/users/crosstext/first-cycle/train-automatic-europarl/en-3-class-train-automatic.conll02'
+es_standard_tag = '/tartalo03/users/crosstext/first-cycle/train-automatic-europarl/es-3-class-train-automatic.conll02'
+it_standard_tag = '/tartalo03/users/crosstext/first-cycle/train-automatic-europarl/it-3-class-train-automatic.conll02'
+de_standard_tag = '/tartalo03/users/crosstext/first-cycle/train-automatic-europarl/de-3-class-train-automatic.conll02'
 
 def read_freq_corpora(filename, lang, corpora):
     """Read back-off corpora (wikiner) and create back-off database."""
